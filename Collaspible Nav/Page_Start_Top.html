@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="https://js.worksmartsuite.com/1.8.15.jquery-ui.css" type="text/css" media="all" />
+<script src="https://js.worksmartsuite.com/1.8.3.jquery.min.js" type="text/javascript"></script>
+<script src="https://js.worksmartsuite.com/1.8.14.jquery-ui.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+jq16 = jQuery.noConflict(true);
+jq16(document).ready(function(){
+    jq16("td.categorySidebar table tr").each(function() {
+        //IE fix - get all tr and rebuild to end of table
+        jq16(this).appendTo("td.categorySidebar table tbody");
+        //get all level1 td
+        if(jq16(this).children().hasClass('categorySidebarLabelLevel1')) {
+            //add same td class to parent tr and apply show function
+            jq16(this).addClass(jq16(this).children().attr('class'));
+            //add hover to level1 tr
+            jq16(this).hover(
+                function(){
+                    if(jq16(this).hasClass('categorySidebarLabelSelected') || jq16('> td table tr td',this).hasClass('categorySidebarLabelSelected')) {
+                        return false;
+                    } else {
+                        jq16('> td table',this).stop(true, true).toggle();
+                    }
+                }
+            );
+        }
+    });
+    //on document load build table of sub-levels and check to see whats selected to show/hide
+    jq16("td.categorySidebar table tr[class^='categorySidebarLabelLevel1']").each(function(k,v) {
+    //wrap the sub-levels in table and hide
+        var subCat = jq16(this).nextUntil("[class^='categorySidebarLabelLevel1']").wrapAll('<table style="display: none;" ><tbody></tbody></table>');
+        //Append table of sub-levels to level1 td so we can apply hover function
+        jq16(subCat).parent().parent().appendTo(jq16(this).children('td'));
+        //Check level1 to see if it is selected
+        if(jq16(this).hasClass('categorySidebarLabelSelected')) {
+            jq16(this).children().children().show();
+        }
+        //check each sub-level to see if it is selected
+        jq16(subCat).each(function() {
+            if(jq16(this).children().hasClass('categorySidebarLabelSelected')) {
+                jq16(this).parent().parent().show();
+            }
+        });
+    });
+});
+</script>

@@ -1,0 +1,24 @@
+<script type="text/javascript">
+
+
+	function verifyPreview(){
+		
+		$("#ctl00_ctl00_ContentPlaceHolderBody_StepArea1_StepNextN2_TheLabelButton").attr("href","javascript:__doPostBack('ctl00$ctl00$ContentPlaceHolderBody$StepArea1$StepNextN2$TheLabelButton','')");
+		$("#ctl00_ctl00_ContentPlaceHolderBody_StepArea1_StepNextN2_TheLabelButton").attr("onclick","");
+		
+	}
+	function notifyUser(){
+		alert("Please preview and review your document before proceeding.");
+	}
+	
+	$(function(){
+		
+		$("a:contains(PDF Preview with)").attr("onclick", "verifyPreview()");
+		$("#ctl00_ctl00_ContentPlaceHolderBody_StepArea1_StepNextN2_TheLabelButton").attr("href","#");
+		$("#ctl00_ctl00_ContentPlaceHolderBody_StepArea1_StepNextN2_TheLabelButton").attr("onclick","notifyUser()");
+		
+	});
+	
+
+</script>
+

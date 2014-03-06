@@ -1,0 +1,30 @@
+<script type="text/javascript">
+//this removes the <p> and <br> tags used in the ordering process from showing as text in the cart
+function removeCode() {
+		$('td.itemTable-Description').each(function(){
+			var fieldText = $(this).text();
+			//console.log(fieldText);
+			var plain = fieldText.replace(/<br>|<p>/ig, " ");
+			$(this).text(plain);
+		});
+		
+		$('div.warningAreaMessageWarning').each(function(){
+			var fieldText = $(this).text();
+			//console.log(fieldText);
+			var plain = fieldText.replace(/<br>|<p>/ig, " ");
+			$(this).text(plain);
+		});
+}
+//this is a PF function that needed to be modified to also remove the codes after it runs
+//there are no user definable functions on the shopping cart that could have been used instead
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+	removeCode();
+}	
+
+removeCode();	
+</script>

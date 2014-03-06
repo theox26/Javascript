@@ -1,0 +1,61 @@
+<script src="Custom/customerfiles/getElementsByClassName-1.0.1.js" type="text/javascript"></script>
+<script type="text/javascript" src="jSINI.js"></script>
+<script type="text/javascript">
+/*********
+//this is just a straight copy from move to hold for now, no changes yet
+//weight is from JSINI on page 468
+//var user_ID = CallSINIMethod("GetValue", ["SystemProperty", "LoggedOnUserID",null]);
+//var orderId = CallSINIMethod("GetValue", ["SystemProperty", "PendingOrder",user_ID]);
+//var orderWeight = CallSINIMethod("GetValue",["OrderProperty", "Weight", orderId]);
+//
+//
+************/
+//check the cart contents and remove the last item added if it differs from the others
+var moveToHold = function() { 
+	var emailCount=0, productCount=0;
+	//some browsers don't support getElementsByClassName so the linked file has a function to add it when it doesn't exist
+	var tableDescriptions = getElementsByClassName("itemTable-Product", "td", document.getElementById("ShoppingCart_ShoppingCart"));
+
+	var lastProduct = tableDescriptions.length -1;
+	//Change the message in the alert here
+	var warningMessage = 'You are attempting to order both printed material and online products on the same order.\nIn order to maintain the tracking characteristics of your online products these two product types must be ordered on separate orders.\nThe item you have just completed has been placed in the On Hold section of your shopping cart.\nContinue with your current order and come back to your cart to complete the separate order.';
+
+	for(var i=0; i<=lastProduct;i++) {
+		var productName = tableDescriptions[i].childNodes[0].nodeValue;
+
+		//the name must match exactly what is in the Description cell
+			if(productName == 'Residential Services Lead Capture Page'){ 
+			emailCount++;
+			}
+			else {
+			productCount++;
+			}
+	}
+
+	if(emailCount && productCount) {
+		//JSINI must be linked for these. Calls all the needed data to move the last doc to the Hold section
+		var user_ID = CallSINIMethod("GetValue", ["SystemProperty", "LoggedOnUserID",null]);
+		//in the cart, the pending order must be used to get doc ID
+		var orderId = CallSINIMethod("GetValue", ["SystemProperty", "PendingOrder",user_ID]);
+		var docIds = CallSINIMethod("GetListValue",["OrderListProperty", "DocumentsInOrder", orderId]);
+		var CartValue = CallSINIMethod("SetValue",["DocumentProperty","EditingStatus",docIds[lastProduct],"OnHold"]);
+	
+		alert(warningMessage);
+		//the JSINI call to move an item on hold works on the server and does not update the user view
+		window.location.reload();
+	}
+}
+
+//this is a PF function that needed to be modified to also move the product after it runs
+//there are no user definable functions on the shopping cart that could have been used instead
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+	moveToHold();
+}	
+
+moveToHold();	
+</script>	
