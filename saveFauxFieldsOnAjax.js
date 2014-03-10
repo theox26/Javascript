@@ -18,14 +18,15 @@ var fauxFix = {
 	JSONfield : FormGetField("JSONfield"),
 
 	fieldValuesToJSON : function() {
-	//the number of arguments does not matter
 		var allFields = {};
 		for (var i = 0, j=fauxFix.saveFields.length; i < j; i++) {
 			var thisValue = FormGetFieldValue(fauxFix.saveFields[i]);
 			if (thisValue !== ''){
 				allFields[fauxFix.saveFields[i]] = FormGetFieldValue(fauxFix.saveFields[i]);
 			}
-		}	
+		}
+		//keep the data on a page reload after PDF upload
+		if(allFields !== {})	
 		fauxFix.JSONfield.value = JSON.stringify(allFields);
 	},
 
@@ -33,19 +34,22 @@ var fauxFix = {
 		var allValues = JSON.parse(fauxFix.JSONfield.value);
 		for (var i = 0, j=fauxFix.saveFields.length; i < j; i++){
 			//we only create dropdowns or checkboxes. This should look at others if you use them
-			var fieldObj = FormGetField(fauxFix.saveFields[i]);
-			if(fieldObj){
+			if(allValues[fauxFix.saveFields[i]]){
+				var fieldObj = FormGetField(fauxFix.saveFields[i]);
 				var fieldType = fieldObj.type ? fieldObj.type.toUpperCase() : "";
+				if(fieldType === "" && fieldObj[0]){
+					fieldType = fieldObj[0].type ? fieldObj[0].type.toUpperCase() : "";
+				}
 				if(fieldType == "CHECKBOX" || fieldType == "RADIO"){
-					//var valueArray = allValues[field].split("\n");
-					for (box in fieldObj){
-						if(allValues[fauxFix.saveFields[i]].indexOf(fieldObj[box].value) > -1){
+					for (var box = 0; box < fieldObj.length; box++){
+						if(fieldObj[box] && allValues[fauxFix.saveFields[i]].indexOf(fieldObj[box].value) > -1){
 							fieldObj[box].checked = true;
-						},
+						} //default is unchecked so no need for else
 					}
 				} else {
 					FormSetFieldValue(fauxFix.saveFields[i], allValues[fauxFix.saveFields[i]]);
 				}
+				evaluateFields(fieldObj);
 			}
 		}
 	}
