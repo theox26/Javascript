@@ -56,10 +56,5 @@ if (field.id == copyShip.id){
 }
 //alert('User ID: '+ user_ID + '\nOrder ID: '+ orderId + '\nShipmentID: '+ shipmentId + '\nLast Name: '+lastName);
 }
+//pp460
 </script>
-pp460
-
-
-
-
-

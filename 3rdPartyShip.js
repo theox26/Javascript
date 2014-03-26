@@ -44,12 +44,7 @@ if (ShipCountry != "US")
 	}
 
 	if (test1 && international) {
-	/* these do not work in IE
-	$("#FIELD_"+FieldIDs["ShippingDeliveryMethod"]+" option").hide();
-	$("#FIELD_"+FieldIDs["ShippingDeliveryMethod"]+" option[value='Custom_01']").show();
-	$("#FIELD_"+FieldIDs["ShippingDeliveryMethod"]+" option[value='Custom_06']").show();
-	$("#FIELD_"+FieldIDs["ShippingDeliveryMethod"]+" option[value='Custom_05']").show();*/
-	//using radio buttons and vanilla js so it works in IE and all others
+	//using radio buttons
 	for(var i = 0; i < theForm.FIELD_38.length; i++) {
 		if (theForm.FIELD_38[i].value == "Custom_01" || theForm.FIELD_38[i].value == "Custom_05" || theForm.FIELD_38[i].value == "Custom_06")
 		{
@@ -76,10 +71,6 @@ if (ShipCountry != "US")
 	}
 	
 	else if (test1) {
-	/*$("#FIELD_"+FieldIDs["ShippingDeliveryMethod"]+" option").hide();
-	$("#FIELD_"+FieldIDs["ShippingDeliveryMethod"]+" option[value^='Custom']").show();
-	$("#FIELD_"+FieldIDs["ShippingDeliveryMethod"]+" option[value='Custom_06']").hide();
-	$("#FIELD_"+FieldIDs["ShippingDeliveryMethod"]+" option[value='Custom_05']").hide();*/
 	for(var i = 0; i < theForm.FIELD_38.length; i++) {
 	if (theForm.FIELD_38[i].value == "Custom_01" || theForm.FIELD_38[i].value == "Custom_02" || theForm.FIELD_38[i].value == "Custom_03" || theForm.FIELD_38[i].value == "Custom_04" || theForm.FIELD_38[i].value == "Custom_07" || theForm.FIELD_38[i].value == "Custom_08")
 	{
@@ -91,11 +82,7 @@ if (ShipCountry != "US")
 }
 	
 	}
-	else {
-	/*$("#FIELD_"+FieldIDs["ShippingDeliveryMethod"]+" option").show();
-	$("#FIELD_"+FieldIDs["ShippingDeliveryMethod"]+" option[value^='Custom']").hide();
-	$("#FIELD_"+FieldIDs["ShippingDeliveryMethod"]+" option[value='Custom_01']").show();*/
-	
+	else {	
 		for(var i = 0; i < theForm.FIELD_38.length; i++) {
 			if (theForm.FIELD_38[i].value == "Custom_02" || theForm.FIELD_38[i].value == "Custom_03" || theForm.FIELD_38[i].value == "Custom_04" || theForm.FIELD_38[i].value == "Custom_05" || theForm.FIELD_38[i].value == "Custom_06" || theForm.FIELD_38[i].value == "Custom_07" || theForm.FIELD_38[i].value == "Custom_08")
 			{
