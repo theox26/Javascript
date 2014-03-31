@@ -1,3 +1,4 @@
+<div style="width:300px;" ></div>
 <script>
 function StorefrontValidatorHook() {
     var qty = PFSF_GetFieldValueByName("FIELD_"+FieldIDs["PrintingQuantity"]);
@@ -6,15 +7,11 @@ function StorefrontValidatorHook() {
  
     if ( +qty > +maxQty ) {
         qtyValidation.style.display = "";
-        qtyValidation.innerHTML = "The quantity must be less than available inventory.";
+        qtyValidation.innerHTML = "The quantity must be less than available inventory. There are currently " + maxQty + " in inventory.";
         return false;
     } else if (qty > 500) {
         qtyValidation.style.display = "";
         qtyValidation.innerHTML = "The quantity must be less than 500.";
-        return false;
-    } else if (qty % 1 !== 0) {
-        qtyValidation.style.display = "";
-        qtyValidation.innerHTML = "Products may be ordered in whole values only.";
         return false;
     } else {
         return true;
