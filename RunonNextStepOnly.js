@@ -1,14 +1,9 @@
-function StorefrontValidatorHook(e) {
-    e = e || window.event;
-    e = e.target || e.srcElement;
-        alert(e.id);
-}
 
 function leavingPage(){
 leavingP = 1;
 }
 
-function StorefrontValidatorHook(e) {
+function StorefrontValidatorHook() {
 var alertMSG = '';
 
 var mailDate = FormGetFieldValue("date");
