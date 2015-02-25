@@ -1,0 +1,3 @@
+<data name="QueryError/Warning/InvalidFields" xml:space="preserve">
+    <value>WARNING: Some fields have invalid values<![CDATA[<br><br><div id="warningText"><table bgcolor="#BB1237" ><tr><td>Your order contains required missing information.</td></tr><tr><td>If you wish to save your order and complete it later, click Continue Anyway to proceed. Your order will be placed in the shopping cart's On Hold area. However, you will not be able to complete the checkout process until the missing information is completed.</td></tr><tr><td>If you wish to complete the errors now click Correct Errors.</td></tr></table></div>]]></value>
+  </data>
