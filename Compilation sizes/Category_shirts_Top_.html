@@ -1,0 +1,101 @@
+<script type="text/javascript">
+$(document).ready(function () {
+    var ShirtsArr = [];
+    var Allbuttons = "";
+    var catalogFooterText = $("a.catalogItemFooter");
+
+    function buildLinks() {
+        var sizenew = $(this).text().trim().slice(0, -1).split("(");
+		if (sizenew[1]) {
+        Allbuttons += "<a href='" + $(this).attr('href') + "' class='shirtButton'>" + sizenew[1] + "</a>";
+		} else {
+		Allbuttons += "<a href='" + $(this).attr('href') + "' class='shirtButton'>All Options</a>";
+		}
+    }
+
+    function createShirtArray(index) {
+        var ShirtName = $(this).text().split("(");
+        var ShirtNameTrim = jQuery.trim(ShirtName[0]);
+        ShirtsArr.push(ShirtNameTrim);
+    }
+    $("#catalogContainerThumbnails").css('display', 'none');
+    $(catalogFooterText).each(createShirtArray);
+    var ShirtsArr2 = eliminateDuplicates(ShirtsArr);
+    for (var i = 0; i < ShirtsArr2.length; i++) {
+        var image = $('div.catalogItemFooter').find(":contains('" + ShirtsArr2[i] + "')").parents('table').find('img').attr('src');
+        var allLinks = $('.catalogItemFooter').find(":contains('" + ShirtsArr2[i] + "')").parent().find('div.catalogItemFooter a');
+        allLinks.each(buildLinks);
+		if (ShirtsArr2[i]) {
+        $("#new").append("<div class='shirtObj'><img src='" + image + "' class='shirtImage' /><div class='buttons'>" + Allbuttons + "</div><p class='shirtTitle'>" + ShirtsArr2[i] + "</p></div>");
+		} else {
+		$("#new").append("<div class='shirtObj'><img src='" + image + "' class='shirtImage' /><div class='buttons'>" + Allbuttons + "</div><p class='shirtTitle'>All Options</p></div>");
+		}
+        Allbuttons = "";
+    }
+
+});
+
+function eliminateDuplicates(arr) {
+    var i,
+    len = arr.length,
+        out = [],
+        obj = {};
+
+    for (i = 0; i < len; i++) {
+        obj[arr[i]] = 0;
+    }
+    for (i in obj) {
+        out.push(i);
+    }
+    return out;
+}
+</script>
+<style>
+.shirtButton {
+    margin:5px;
+    float:left;
+    font-size: 100%;
+    padding: .5em .7em;
+    color: #444;
+    color: rgba(0, 0, 0, .8);
+    border: 1px solid #999;
+    border: 0 rgba(0, 0, 0, 0);
+    background-color: #C5C5C5;
+    text-decoration: none;
+    border-radius: 2px;
+    -webkit-transition: .1s linear -webkit-box-shadow;
+    -moz-transition: .1s linear -moz-box-shadow;
+    -ms-transition: .1s linear box-shadow;
+    -o-transition: .1s linear box-shadow;
+    transition: .1s linear box-shadow;
+}
+.shirtButton:hover, .shirtButton:focus {
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#1a000000', GradientType=0);
+    background-image:-webkit-gradient(linear, 0 0, 0 100%, from(transparent), color-stop(40%, rgba(0, 0, 0, .05)), to(rgba(0, 0, 0, .1)));
+    background-image:-webkit-linear-gradient(transparent, rgba(0, 0, 0, .05) 40%, rgba(0, 0, 0, .1));
+    background-image:-moz-linear-gradient(top, rgba(0, 0, 0, .05) 0, rgba(0, 0, 0, .1));
+    background-image:-ms-linear-gradient(transparent, rgba(0, 0, 0, .05) 40%, rgba(0, 0, 0, .1));
+    background-image:-o-linear-gradient(transparent, rgba(0, 0, 0, .05) 40%, rgba(0, 0, 0, .1));
+    background-image:linear-gradient(transparent, rgba(0, 0, 0, .05) 40%, rgba(0, 0, 0, .1))
+}
+.shirtObj {
+    width:200px;
+    float:left;
+    margin:10px;
+}
+.shirtImage {
+    height:158px;
+    text-align:center;
+    padding:15px 15px 15px 15px;
+    border-radius:10px;
+    display:block;
+    margin:auto;
+}
+.buttons {
+    height:100px;
+}
+.shirtTitle {
+    float:left;
+}
+</style>
+<div id="new"></div>

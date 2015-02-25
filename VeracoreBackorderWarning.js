@@ -1,9 +1,9 @@
 <div id="backorderWarning">
     <p>
         The selected item does not have sufficient inventory in stock to complete your order.  The current inventory is 
-        <span id="VcQty" class="boQty" >0</span>.  If you wish to proceed, the item will be placed on 
-        <span class="boBold" >BACKORDER</span>
-         and will be fulfilled once the item is back in stock.
+        <span id="VcQty" class="boQty" >0</span>.  If you wish to proceed, you will be shipped what is in inventory and the balance will be put on 
+        <span class="boBold" >BACKORDER</span>.
+         Once the item is back in stock, the balance will be fulfilled.
     </p>
 </div>
 <style>
