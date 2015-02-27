@@ -8,7 +8,7 @@ var fillForm = function() {
 var otherProdCode = "",
     loopPID = "",
     loopProdCode = "",
-    tempValue = "";
+    tempField = "";
 
     // get the user id
     var user_id = CallSINIMethod("GetValue", ["SystemProperty", "LoggedOnUserID", null]);
@@ -47,15 +47,18 @@ var otherProdCode = "",
         for(var fieldName in FieldIDs){
             //this might take a really long time to call all of these
             //using a cookie or one field with JSON might be better
-            tempValue = CallSINIMethod("GetValue", ["VariableValue", fieldName, otherDocID]) || "";
-            sl(fieldName).value( tempValue ).readOnly();
+            tempField = sl(fieldName);
+
+            if(tempField.fieldObj !== null){ //FieldIDs includes HTML literals which won't have a returned object
+                tempField.value( CallSINIMethod("GetValue", ["VariableValue", fieldName, otherDocID]) );
+            }
         }
     }
-
 
 }
 
 $(function () {
+    $("#tabs").hide(); //these all use tabs in the bios
     fillForm();
 });
 </script>
