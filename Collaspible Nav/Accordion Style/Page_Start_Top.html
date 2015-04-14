@@ -1,0 +1,44 @@
+
+<script type="text/javascript">
+//Disable Specific Top-Level Nav Items
+	$(document).ready(function(){ 
+		//category id number
+		var links = [69,94,96,97,149,154];
+		// the loop
+		for (i = 0; i < links.length; i++) {
+			$("a[href='UserContentStart.aspx?category=" + links[i] + "']").removeAttr('href');
+		};
+	});
+	
+
+//Category Navigation animation
+$(document).ready(function () {
+//Remove tr elements
+	$('td.categorySidebar table tr').contents().unwrap();
+//Change td elements to list items
+	$('td.categorySidebar table td').replaceWith(function(){
+			return $("<li />").append($(this).contents());
+	});
+//Remove the rest of the table structure and built ul struction with top-level and sub-level ul
+	$('td.categorySidebar table').contents().unwrap();
+	$('td.categorySidebar tbody').contents().unwrap();
+	$("a.categorySidebarLabelLevel1").parent('li').addClass('top-level');
+	$('td.categorySidebar li').wrapAll('<ul id="accordion">')
+//Wrap sub-level items in ul
+	$('li.top-level').each(function(){
+			$(this).nextUntil('li.top-level').wrapAll('<ul class="sub-level">');
+	});
+
+//Accordion Function
+	$("#accordion > li").click(function(){
+		if(false == $(this).next('ul').is(':visible')) {
+			$('#accordion > ul').slideUp(300);
+		}
+		$(this).next('ul').slideToggle(300);
+	});
+});
+//Keep menu open if sub-level item is selected.
+$(document).ready(function(){
+    $(".sub-level li a.categorySidebarLabelSelected").parent().parent().css({"display": "block"});
+});
+</script>

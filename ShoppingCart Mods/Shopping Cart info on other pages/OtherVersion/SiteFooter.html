@@ -1,0 +1,167 @@
+﻿<script type="text/javascript">
+// This section is only needed on the shopping cart (UserContentShoppingCart.aspx)
+// or other pages with AJAX calls which can change the page contents without a full
+// postback.
+// Begin Async Postback Section
+// This function will override the post-back handler in ASP.Net
+// and ensure that our jQuery code runs after an async postback
+Sys.WebForms.PageRequestManager.getInstance().add_endRequest(myJQueryRequestHandler);
+
+function myJQueryRequestHandler(sender, args) {
+    AddCart();
+}
+
+    $(document).ready(function () {
+
+        // change home link
+        $("a[id$='_start_anchor']").removeAttr("href").attr("href", "UserContentStart.aspx?category=12");
+
+		// uncheck add to library by default on asset upload.
+		$('input:checkbox[id*="chkAddToMyLibrary"]').attr('checked', false);
+		
+		AddCart();
+});
+
+function AddCart() {
+
+    var totalprice = 0;
+    // get the user id
+    var user_id = CallSINIMethod("GetValue", ["SystemProperty", "LoggedOnUserID", null]);
+	// get all documents in Cart
+    var cart = CallSINIMethod("GetListValue", ["UserListProperty", "DocumentsInShoppingCart", user_id]);
+	//Loop through Cart
+    $.each(cart, function () {
+		//Get Price of each item
+        var price = CallSINIMethod("GetValue", ["DocumentProperty", "Price", this]);
+		// Get name of each item
+        var docname = CallSINIMethod("GetValue", ["DocumentProperty", "ProductName", this]);
+		// If no price, return $0.00
+        if (!price) {
+            price = "0.00";
+        }
+		//Print out each item
+        $("#mini_shoppingcart table tbody").append("<tr><td class='tbr'>" + docname + "</td><td> $" + price + "</td></tr>");
+		//Add each item up to find Total Price
+        totalprice += parseFloat(price);
+
+    });
+	//Print out total
+    $("#mini_shoppingcart table tfoot").append("<tr><td class='tbr'>Total</td><td> $" + totalprice + "</td></tr>");
+	$("#total_cart span").html('$' + totalprice);
+	$("#quick_view").click(function() {
+			$("#mini_shoppingcart").slideToggle();
+			});
+	//Plus and Minus
+	$("#quick_view").on("click", function() {
+  var el = $('.plusminus');
+  if (el.text() == el.data("text-swap")) {
+    el.text(el.data("text-original"));
+  } else {
+    el.data("text-original", el.text());
+    el.text(el.data("text-swap"));
+  }
+});
+}
+</script>
+<style type="text/css">
+.plusminus {display:inline;vertical-align:middle;}
+
+#mini_shoppingcart {
+display:none;
+background:#fff;
+padding:5px;
+clear:right;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+height:auto;
+border:1px solid gray;
+}
+#mini_shoppingcart table {
+border-collapse:collapse;
+}
+#mini_shoppingcart td{
+min-width:50px;
+max-width:300px;
+padding:10px;
+}
+#mini_shoppingcart tfoot td{
+ font-weight:bold;
+ border-top-style: double;
+border-top-width: 1px;
+border-top-color: black;
+}
+#mini_shoppingcart tr td:first{
+border:left 1px solid black;
+}
+#mini_shoppingcart td.tbr{
+border-right:1px solid black;
+}
+#whole_cart {
+font-family:Arial, Helvetica, sans-serif;
+position:absolute;
+right:30px;
+top:0px;
+padding:10px;
+}
+#total_cart{
+text-align:center;
+cursor:pointer;
+float:right;
+clear:both;
+padding-bottom:10px;
+}
+#total_cart a {
+height: 20px;
+text-decoration: none;
+display: block;
+padding:5px 0;
+}
+#total_cart a:hover{
+background:rgba(232,182,22,0.5);
+padding:5px;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+}
+
+#total_cart span{
+vertical-align:top;
+font-weight:bold;
+padding-left:5px;
+font-size:18px;
+}
+#total_cart h4{margin:10px 0 5px;}
+
+.cart_text {
+font-size:12px;
+text-transform:uppercase;
+}
+#quick_view{padding-top:5px;cursor:pointer;display:inline;}
+#quick_view:hover{text-decoration:underline;}
+
+</style>
+	  <div id="whole_cart">
+				<div id="total_cart">
+					<h4 class="cart_text">Shopping Cart</h4>
+					<a href="/UserContentShoppingCart.aspx">
+					<img src="Custom\Themes\ExceliiAdmin\Inserts\images\icon-cart.png" alt="Shopping">
+					<span></span>
+					</a>
+					<strong id="quick_view" class="cart_text">Quick View&nbsp;</strong><div class="plusminus" data-text-swap="&#8722;">+</div>
+				</div>
+	  <div id="mini_shoppingcart">
+			<table>
+				<thead>
+					<tr>
+						<th>Product</th>
+						<th>Price</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+				<tfoot>
+				</tfoot>
+			</table>
+		</div>
+</div>
