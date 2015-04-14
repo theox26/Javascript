@@ -1,4 +1,4 @@
-﻿<script>
+<script>
 
 var fillForm = function() {
 //takes information from other bio in cart and fills in this product's form.
@@ -44,21 +44,41 @@ var otherProdCode = "",
     
 	//if none match then do nothing. If it does, then fill in the form and set fields to read only.	
     if(otherProdCode){
+        //change to GetAllValues to speed up the process
+        var allOtherValues = CallSINIMethod("GetAllValues", ["VariableValue", otherDocID]),
+            otherFields = { "FFQuantity" : "1" }; //most people will skip the print options so it needs filled in
+
+        allOtherValues = allOtherValues.replace(/NULL/g, "");
+        allOtherValues = allOtherValues.split(otherDocID + ",");
+        
+        for (i = 0, j = allOtherValues.length; i < j; i++) {
+            tempField = allOtherValues[i].split("|");
+            otherFields[tempField[0]] = tempField[1];
+        }
+
+        //make sure they need to check the box again
+        otherFields.Proof_Review_Validation = "";
+
         for(var fieldName in FieldIDs){
             //this might take a really long time to call all of these
             //using a cookie or one field with JSON might be better
             tempField = sl(fieldName);
 
-            if(tempField.fieldObj !== null){ //FieldIDs includes HTML literals which won't have a returned object
-                tempField.value( CallSINIMethod("GetValue", ["VariableValue", fieldName, otherDocID]) );
+            //FieldIDs includes HTML literals which won't have a returned object
+            //FF/Chrome return null and IE returns undefined
+            if(tempField.fieldObj){ 
+                tempField.value( otherFields[fieldName] );
             }
         }
-    }
 
+    } else {
+        $("#tabs").parent().prepend("<p>There is no existing version in the shopping cart.</p>");
+    }
 }
 
 $(function () {
     $("#tabs").hide(); //these all use tabs in the bios
     fillForm();
+    
 });
 </script>

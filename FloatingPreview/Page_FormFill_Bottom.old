@@ -1,0 +1,37 @@
+<script type="text/javascript">
+//alert("Insert is loaded!");
+//This makes a floating preview
+$(function() {
+
+    //create a div from elements inside table cell
+        $('.formFilling-preview').wrapInner('<div id="floatingcontainer"></div>');
+
+    //create a span and insert top update/preview buttons
+    //if you want the bottom buttons instead, change "#StepArea_btnUpdate_div" to "#StepArea_btnUpdate2_div", don't forget css
+        $('#floatingcontainer').append('<span id="buttonscontainer"></span>');
+        $('#buttonscontainer').append($('#StepArea_btnUpdate_div').parent().parent());
+
+    //fix VCR controls onclick function
+    //with out this the floating box will jump to the top when you change pages
+        $('#vcrControls').click(function() { return false; });
+
+    //assign animation to newly created div
+    //you don't need easing but it makes the animation a bit more interesting
+        var offset = $("#floatingcontainer").offset();
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > offset.top) {
+                $("#floatingcontainer").stop().animate({
+            top: $(window).scrollTop() - offset.top},{
+            queue: false,
+            duration: 500,
+            easing: "easeInExpo",
+            easing: "easeOutCirc"
+        });
+            } else {
+                $("#floatingcontainer").stop().animate({
+            top: 0
+                });
+            };
+        });
+    });
+</script>
