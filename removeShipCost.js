@@ -1,9 +1,9 @@
 <script>
 $(function(){
-$('#'+FormGetField('ShippingDeliveryMethod').id).click(function(){
-StorefrontEvaluateFieldsHook();
-});
-removePrice();
+	$('#'+FormGetField('ShippingDeliveryMethod').id).click(function(){
+		StorefrontEvaluateFieldsHook();
+	});
+	removePrice();
 });
 
 function StorefrontEvaluateFieldsHook(field){
@@ -11,9 +11,15 @@ function StorefrontEvaluateFieldsHook(field){
 }
 
 function removePrice(){
-	var fedex = $('#DIV_38 span').html().split(':');
+	//radio button
+	$('#DIV_38 span').each(function(){
+		$(this).html( $(this).html().split(':')[0] );
+	});
 
-	$('#DIV_38 span').html(fedex[0]);
+	//dropdown
+	$('#DIV_38 option').each(function(){
+		$(this).html( $(this).html().split(':')[0] );
+	});
 }
 
 </script>
